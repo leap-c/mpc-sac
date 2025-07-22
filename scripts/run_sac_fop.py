@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from leap_c.examples import create_env, create_controller
-from leap_c.run import default_output_path, init_run
+from leap_c.run import default_controller_code_path, default_output_path, init_run
 from leap_c.torch.rl.sac_fop import SacFopTrainer, SacFopTrainerConfig
 
 
@@ -19,12 +19,13 @@ class RunSacFopConfig:
 
 
 def run_sac_fop(
-    output_path: str | Path,
+    trainer_output_path: str | Path,
     env_name: str,
     controller_name: str,
     seed: int = 0,
     device: str = "cuda",
     verbose: bool = True,
+    reuse_code_dir: Path | None = None,
 ) -> float:
     # ---- Configuration ----
     cfg = RunSacFopConfig(env_name=env_name, device=device)
@@ -83,12 +84,12 @@ def run_sac_fop(
     trainer = SacFopTrainer(
         val_env=create_env(cfg.env_name, render_mode="rgb_array"),
         train_env=create_env(cfg.env_name),
-        controller=create_controller(cfg.controller_name),
-        output_path=output_path,
+        controller=create_controller(cfg.controller_name, reuse_code_dir),
+        output_path=trainer_output_path,
         device=device,
         cfg=cfg.trainer,
     )
-    init_run(trainer, cfg, output_path)
+    init_run(trainer, cfg, trainer_output_path)
 
     return trainer.run()
 
@@ -100,19 +101,40 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--env", type=str, default="cartpole")
     parser.add_argument("--controller", type=str, default=None)
+    parser.add_argument(
+        "-r",
+        "--reuse_code",
+        action="store_true",
+        help="Reuse compiled code. The first time this is run, it will compile the code.",
+    )
+    parser.add_argument("--reuse_code_dir", type=Path, default=None)
     args = parser.parse_args()
-
-    controller_name = args.controller if args.controller else "default"
-
-    output_path = default_output_path(seed=args.seed, tags=["sac_fop", args.env, controller_name])
 
     if args.controller is None:
         args.controller = args.env
 
+    if args.output_path is None:
+        trainer_output_path = default_output_path(
+            seed=args.seed, tags=["sac_fop", args.env, args.controller]
+        )
+    else:
+        trainer_output_path = args.output_path
+
+    if args.reuse_code and args.reuse_code_dir is None:
+        reuse_code_dir = (
+            default_controller_code_path() if args.reuse_code else None
+        )
+    elif args.reuse_code_dir is not None:
+        reuse_code_dir = args.reuse_code_dir
+    else:
+        reuse_code_dir = None
+
     run_sac_fop(
-        output_path,
+        trainer_output_path,
         env_name=args.env,
         controller_name=args.controller,
         seed=args.seed,
         device=args.device,
+        verbose=True,
+        reuse_code_dir=reuse_code_dir,
     )
