@@ -1,10 +1,12 @@
 """Main script to run experiments."""
+
 from argparse import ArgumentParser
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from leap_c.run import init_run, default_output_path
 from leap_c.examples import create_env
+from leap_c.torch.nn.extractor import ExtractorName
 from leap_c.torch.rl.sac import SacTrainer, SacTrainerConfig
 
 
@@ -13,21 +15,16 @@ class RunSacConfig:
     """Configuration for running SAC experiments."""
 
     env: str = "cartpole"
-    device: str = "cuda"  # or 'cpu'
     trainer: SacTrainerConfig = field(default_factory=SacTrainerConfig)
+    extractor: ExtractorName = "identity"  # for hvac use "scaling"
 
 
-def run_sac(
-    output_path: str | Path, seed: int = 0, env: str = "cartpole", device: str = "cuda"
-) -> float:
-    cfg = RunSacConfig(env=env, device=device)
-    cfg.env = env
-    cfg.trainer.seed = seed
-
+def create_cfg() -> RunSacConfig:
+    """Return the default configuration for running SAC experiments."""
     # ---- Configuration ----
     cfg = RunSacConfig()
-    cfg.env = env
-    cfg.device = device
+    cfg.env = "cartpole"
+    cfg.extractor = "identity"  # for hvac use "scaling"
 
     # ---- Section: cfg.trainer ----
     cfg.trainer.seed = 0
@@ -36,11 +33,11 @@ def run_sac(
     cfg.trainer.val_interval = 10000
     cfg.trainer.val_num_rollouts = 20
     cfg.trainer.val_deterministic = True
-    cfg.trainer.val_num_render_rollouts = 1
-    cfg.trainer.val_render_mode = 'rgb_array'
+    cfg.trainer.val_num_render_rollouts = 0
+    cfg.trainer.val_render_mode = "rgb_array"
     cfg.trainer.val_render_deterministic = True
-    cfg.trainer.val_report_score = 'cum'
-    cfg.trainer.ckpt_modus = 'best'
+    cfg.trainer.val_report_score = "cum"
+    cfg.trainer.ckpt_modus = "best"
     cfg.trainer.batch_size = 64
     cfg.trainer.buffer_size = 1000000
     cfg.trainer.gamma = 0.99
@@ -57,7 +54,7 @@ def run_sac(
     cfg.trainer.update_freq = 4
 
     # ---- Section: cfg.trainer.log ----
-    cfg.trainer.log.verbose = False
+    cfg.trainer.log.verbose = True
     cfg.trainer.log.interval = 1000
     cfg.trainer.log.window = 10000
     cfg.trainer.log.csv_logger = True
@@ -67,20 +64,26 @@ def run_sac(
 
     # ---- Section: cfg.trainer.critic_mlp ----
     cfg.trainer.critic_mlp.hidden_dims = (256, 256, 256)
-    cfg.trainer.critic_mlp.activation = 'relu'
-    cfg.trainer.critic_mlp.weight_init = 'orthogonal'
+    cfg.trainer.critic_mlp.activation = "relu"
+    cfg.trainer.critic_mlp.weight_init = "orthogonal"
 
     # ---- Section: cfg.trainer.actor_mlp ----
     cfg.trainer.actor_mlp.hidden_dims = (256, 256, 256)
-    cfg.trainer.actor_mlp.activation = 'relu'
-    cfg.trainer.actor_mlp.weight_init = 'orthogonal'
+    cfg.trainer.actor_mlp.activation = "relu"
+    cfg.trainer.actor_mlp.weight_init = "orthogonal"
+
+    return cfg
+
+
+def run_sac(cfg: RunSacConfig, output_path: str | Path, device: str = "cuda") -> float:
 
     trainer = SacTrainer(
-        val_env=create_env(cfg.env, render_mode="rgb_array"),
-        train_env=create_env(cfg.env),
-        output_path=output_path,
-        device=args.device,
         cfg=cfg.trainer,
+        val_env=create_env(cfg.env, render_mode="rgb_array"),
+        output_path=output_path,
+        device=device,
+        train_env=create_env(cfg.env),
+        extractor_cls=cfg.extractor,
     )
     init_run(trainer, cfg, output_path)
 
@@ -97,4 +100,8 @@ if __name__ == "__main__":
 
     output_path = default_output_path(seed=args.seed, tags=["sac", args.env])
 
-    run_sac(output_path, seed=args.seed, env=args.env, device=args.device)
+    cfg = create_cfg()
+    cfg.trainer.seed = args.seed
+    cfg.env = args.env
+
+    run_sac(cfg, output_path, args.device)
