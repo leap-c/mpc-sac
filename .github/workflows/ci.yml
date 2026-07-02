@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      leap_c_ref:
+        description: leap-c ref to install
+        required: false
+        default: main
+      leap_c_lab_ref:
+        description: leap-c-lab ref to install
+        required: false
+        default: main
+      test_env:
+        description: Script-test env selector
+        required: false
+        default: cartpole
+      test_script:
+        description: Script-test script selector
+        required: false
+        default: sac
+      test_controller:
+        description: Script-test controller selector
+        required: false
+        default: cartpole
+  repository_dispatch:
+    types: [leap-c-updated, leap-c-lab-updated, downstream-ci]
+
+jobs:
+  test:
+    name: test py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+
+    env:
+      ACADOS_SOURCE_DIR: ${{ github.workspace }}/external/acados
+      LD_LIBRARY_PATH: ${{ github.workspace }}/external/acados/lib
+      LEAP_C_REF: ${{ github.event.client_payload.leap_c_ref || github.event.inputs.leap_c_ref || 'main' }}
+      LEAP_C_LAB_REF: ${{ github.event.client_payload.leap_c_lab_ref || github.event.inputs.leap_c_lab_ref || 'main' }}
+      TEST_ENV: ${{ github.event.client_payload.test_env || github.event.inputs.test_env || 'cartpole' }}
+      TEST_SCRIPT: ${{ github.event.client_payload.test_script || github.event.inputs.test_script || 'sac' }}
+      TEST_CONTROLLER: ${{ github.event.client_payload.test_controller || github.event.inputs.test_controller || 'cartpole' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ gcc gfortran libopenblas-dev liblapack-dev
+
+      - name: Build acados
+        run: |
+          git clone --recursive https://github.com/acados/acados.git external/acados
+          cmake -S external/acados -B external/acados/build \
+            -DACADOS_WITH_OPENMP=ON \
+            -DACADOS_NUM_THREADS=1 \
+            -DACADOS_INSTALL_DIR=${ACADOS_SOURCE_DIR}
+          cmake --build external/acados/build --parallel 2 --target install
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install external/acados/interfaces/acados_template
+          python -m pip install "git+https://github.com/leap-c/leap-c.git@${LEAP_C_REF}"
+          python -m pip install "git+https://github.com/leap-c/leap-c-lab.git@${LEAP_C_LAB_REF}"
+          python -m pip install -e ".[dev]"
+
+      - name: Ruff
+        run: |
+          ruff check --config pyproject.toml .
+          ruff format --diff .
+
+      - name: Compile
+        run: python -m compileall mpc_sac scripts tests
+
+      - name: Unit tests
+        run: pytest tests/mpc_sac -v --ignore=tests/mpc_sac/test_scripts.py
+
+      - name: Script smoke tests
+        run: pytest tests/mpc_sac/test_scripts.py -v -s
