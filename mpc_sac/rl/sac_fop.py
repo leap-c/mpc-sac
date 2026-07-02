@@ -9,8 +9,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 from gymnasium import Env, spaces
-
 from leapc_lab.controller import CtxType, ParameterizedController
+
 from mpc_sac.nn.extractor import ExtractorName, get_extractor_cls
 from mpc_sac.nn.mlp import MlpConfig
 from mpc_sac.rl.buffer import ReplayBuffer
@@ -21,10 +21,10 @@ from mpc_sac.rl.mpc_actor import (
 )
 from mpc_sac.rl.sac import SacCritic
 from mpc_sac.rl.utils import soft_target_update
-from mpc_sac.utils import torch_gym
-from mpc_sac.utils.seed import mk_seed
 from mpc_sac.trainer import Trainer, TrainerConfig
+from mpc_sac.utils import torch_gym
 from mpc_sac.utils.gym import flatten_param_space, seed_env, wrap_env
+from mpc_sac.utils.seed import mk_seed
 
 
 @dataclass(kw_only=True)

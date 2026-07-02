@@ -4,8 +4,8 @@ from dataclasses import dataclass
 import numpy as np
 import torch
 from gymnasium.spaces import Box, Dict, Space
-
 from leapc_lab.controller import ParameterizedController
+
 from mpc_sac.rl.mpc_actor import HierachicalMPCActor, HierachicalMPCActorConfig
 from mpc_sac.rl.sac_fop import SacFopTrainerConfig
 from mpc_sac.rl.sac_zop import SacZopTrainerConfig

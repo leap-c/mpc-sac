@@ -11,6 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
   "leap-c",
   "leap-c-lab",
+  "acados-template",
   "gymnasium==1.1.1",
   "numpy>=1.26.0",
   "PyYAML==6.0.2",
@@ -31,6 +32,21 @@ wandb = ["wandb==0.20.1"]
 
 [tool.setuptools.packages.find]
 include = ["mpc_sac*"]
+
+[tool.uv.sources]
+# leap-c: default from GitHub (for CI and other developers).
+leap-c = { git = "https://github.com/leap-c/leap-c.git", branch = "main" }
+# leap-c local development: uncomment the line below and comment out the git source above.
+# leap-c = { path = "/path/to/your/leap-c", editable = true }
+
+# leap-c-lab: default from GitHub (for CI and other developers).
+leap-c-lab = { git = "https://github.com/leap-c/leap-c-lab.git", branch = "main" }
+# leap-c-lab local development: uncomment the line below and comment out the git source above.
+# leap-c-lab = { path = "/path/to/your/leap-c-lab", editable = true }
+
+# acados-template is not on PyPI. Uncomment and point at your local acados checkout.
+# Build acados first: https://docs.acados.org/
+# acados-template = { path = "/path/to/your/acados/interfaces/acados_template", editable = true }
 
 [tool.pytest.ini_options]
 testpaths = "tests"

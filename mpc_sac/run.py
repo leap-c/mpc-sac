@@ -8,10 +8,10 @@ from pathlib import Path
 from typing import Any, Literal, get_args
 
 import torch
+from leapc_lab import ExampleControllerName, ExampleEnvName
 from yaml import safe_dump
 
 import mpc_sac
-from leapc_lab import ExampleControllerName, ExampleEnvName
 from mpc_sac.trainer import CtxType, Trainer, TrainerConfigType
 from mpc_sac.utils.cfg import cfg_as_python
 from mpc_sac.utils.git import log_git_hash_and_diff

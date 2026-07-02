@@ -7,13 +7,13 @@ from typing import Any, Generator, Generic, Literal, TypeVar, get_args
 import gymnasium as gym
 import numpy as np
 import torch
+from leapc_lab.controller import CtxType
 from yaml import safe_dump
 
-from leapc_lab.controller import CtxType
-from mpc_sac.utils.seed import set_seed
 from mpc_sac.utils.gym import WrapperType, wrap_env
 from mpc_sac.utils.logger import Logger, LoggerConfig
 from mpc_sac.utils.rollout import episode_rollout
+from mpc_sac.utils.seed import set_seed
 
 ValReportScoreOptions = Literal["cum", "final", "best"]
 

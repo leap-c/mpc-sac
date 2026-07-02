@@ -15,10 +15,11 @@ from typing import Any, Generator, Literal
 import gymnasium as gym
 import numpy as np
 import torch
+from leapc_lab import ExampleControllerName, ExampleEnvName, create_controller, create_env
+from leapc_lab.controller import CtxType, ParameterizedController
 from numpy import ndarray
 
-from leapc_lab.controller import CtxType, ParameterizedController
-from leapc_lab import ExampleControllerName, ExampleEnvName, create_controller, create_env
+from mpc_sac.rl.buffer import ReplayBuffer
 from mpc_sac.run import (
     add_common_args,
     init_run,
@@ -26,11 +27,10 @@ from mpc_sac.run import (
     resolve_reuse_code_dir,
     setup_wandb,
 )
-from mpc_sac.rl.buffer import ReplayBuffer
-from mpc_sac.utils import torch_gym
-from mpc_sac.utils.seed import mk_seed
 from mpc_sac.trainer import Trainer, TrainerConfig
+from mpc_sac.utils import torch_gym
 from mpc_sac.utils.gym import seed_env, wrap_env
+from mpc_sac.utils.seed import mk_seed
 
 
 @dataclass

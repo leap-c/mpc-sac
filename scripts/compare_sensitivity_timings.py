@@ -14,10 +14,9 @@ summary, timing summary, and a theoretical cost breakdown.
 from timeit import default_timer
 
 import torch
-
+from leap_c.torch import AcadosDiffMpcTorch
 from leapc_lab.cartpole.acados_ocp import export_parametric_ocp
 from leapc_lab.cartpole.planner import CartPolePlannerConfig
-from leap_c.ocp.acados.torch import AcadosDiffMpcTorch
 
 WARMUP = 2
 REPEATS = 50

@@ -18,9 +18,9 @@ from mpc_sac.nn.mlp import Mlp, MlpConfig
 from mpc_sac.nn.scale import min_max_scaling
 from mpc_sac.rl.buffer import ReplayBuffer
 from mpc_sac.rl.utils import soft_target_update
-from mpc_sac.utils.seed import mk_seed
 from mpc_sac.trainer import Trainer, TrainerConfig
 from mpc_sac.utils.gym import seed_env, wrap_env
+from mpc_sac.utils.seed import mk_seed
 
 
 @dataclass(kw_only=True)

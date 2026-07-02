@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 import torch
+from leapc_lab import CONTROLLER_REGISTRY, ENV_REGISTRY, PLANNER_REGISTRY
 
 import mpc_sac
-from leapc_lab import CONTROLLER_REGISTRY, ENV_REGISTRY, PLANNER_REGISTRY
 
 if getattr(mpc_sac, "__file__", None):
     LEAP_C_ROOT = Path(mpc_sac.__file__).resolve().parent.parent

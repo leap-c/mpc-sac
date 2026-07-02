@@ -9,3 +9,6 @@ __pycache__/
 acados_ocp_*/
 c_generated_code*/
 output/
+
+# direnv
+.envrc

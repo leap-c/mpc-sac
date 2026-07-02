@@ -7,13 +7,13 @@ from acados_template.acados_ocp_iterate import (
     AcadosOcpFlattenedBatchIterate,
     AcadosOcpFlattenedIterate,
 )
-from tensordict import TensorDict
-
-from leap_c.ocp.acados.data import (
+from leap_c.diff_mpc.data import (
     AcadosOcpSolverInput,
     collate_acados_flattened_iterate_fn,
     collate_acados_ocp_solver_input,
 )
+from tensordict import TensorDict
+
 from mpc_sac.rl.buffer import ReplayBuffer
 
 

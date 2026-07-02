@@ -1,9 +1,9 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from leapc_lab.cartpole.env import CartPoleEnv
 from torch import float32
 
-from leapc_lab.cartpole.env import CartPoleEnv
 from mpc_sac.rl.sac import SacTrainer, SacTrainerConfig
 
 

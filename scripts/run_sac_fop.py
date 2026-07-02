@@ -6,8 +6,10 @@ from pathlib import Path
 from typing import Literal
 
 import torch
-
 from leapc_lab import ExampleControllerName, ExampleEnvName, create_controller, create_env
+
+from mpc_sac.nn.extractor import ExtractorName
+from mpc_sac.rl.sac_fop import SacFopTrainer, SacFopTrainerConfig
 from mpc_sac.run import (
     add_common_args,
     default_ckpt_modus,
@@ -16,8 +18,6 @@ from mpc_sac.run import (
     resolve_reuse_code_dir,
     setup_wandb,
 )
-from mpc_sac.nn.extractor import ExtractorName
-from mpc_sac.rl.sac_fop import SacFopTrainer, SacFopTrainerConfig
 
 
 @dataclass

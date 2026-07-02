@@ -8,8 +8,8 @@ import gymnasium as gym
 import gymnasium.spaces as spaces
 import torch
 import torch.nn as nn
-
 from leapc_lab.controller import CtxType, ParameterizedController
+
 from mpc_sac.nn.bounded_distributions import (
     BoundedDistribution,
     BoundedDistributionName,
