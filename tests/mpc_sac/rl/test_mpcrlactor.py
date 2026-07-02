@@ -5,10 +5,10 @@ import numpy as np
 import torch
 from gymnasium.spaces import Box, Dict, Space
 
-from leap_c.controller import ParameterizedController
-from leap_c.torch.rl.mpc_actor import HierachicalMPCActor, HierachicalMPCActorConfig
-from leap_c.torch.rl.sac_fop import SacFopTrainerConfig
-from leap_c.torch.rl.sac_zop import SacZopTrainerConfig
+from leapc_lab.controller import ParameterizedController
+from mpc_sac.rl.mpc_actor import HierachicalMPCActor, HierachicalMPCActorConfig
+from mpc_sac.rl.sac_fop import SacFopTrainerConfig
+from mpc_sac.rl.sac_zop import SacZopTrainerConfig
 
 
 @dataclass

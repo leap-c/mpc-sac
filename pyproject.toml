@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mpc-sac"
+version = "0.1.0"
+description = "SAC and CrossQ training utilities for MPC controllers"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "leap-c",
+  "leap-c-lab",
+  "gymnasium==1.1.1",
+  "numpy>=1.26.0",
+  "PyYAML==6.0.2",
+  "tensorboard==2.19.0",
+  "torch>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.4.0",
+  "ruff==0.12.12",
+]
+tuning = [
+  "ConfigSpace",
+  "smac>=2.0.0",
+]
+wandb = ["wandb==0.20.1"]
+
+[tool.setuptools.packages.find]
+include = ["mpc_sac*"]
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint]
+ignore = [
+  "E741",
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "D105",
+  "D106",
+  "D107",
+]
+extend-select = ["D", "I", "NPY", "UP045", "E501"]

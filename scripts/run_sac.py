@@ -7,16 +7,16 @@ from typing import Literal
 
 import torch
 
-from leap_c.examples import ExampleEnvName, create_env
-from leap_c.run import (
+from leapc_lab import ExampleEnvName, create_env
+from mpc_sac.run import (
     add_common_args,
     default_ckpt_modus,
     init_run,
     resolve_output_path,
     setup_wandb,
 )
-from leap_c.torch.nn.extractor import ExtractorName
-from leap_c.torch.rl.sac import SacTrainer, SacTrainerConfig
+from mpc_sac.nn.extractor import ExtractorName
+from mpc_sac.rl.sac import SacTrainer, SacTrainerConfig
 
 
 @dataclass

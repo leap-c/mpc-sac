@@ -9,15 +9,15 @@ import gymnasium.spaces as spaces
 import torch
 import torch.nn as nn
 
-from leap_c.controller import CtxType, ParameterizedController
-from leap_c.torch.nn.bounded_distributions import (
+from leapc_lab.controller import CtxType, ParameterizedController
+from mpc_sac.nn.bounded_distributions import (
     BoundedDistribution,
     BoundedDistributionName,
     get_bounded_distribution,
 )
-from leap_c.torch.nn.extractor import Extractor, ExtractorName, get_extractor_cls
-from leap_c.torch.nn.mlp import Mlp, MlpConfig
-from leap_c.torch.utils import gym as torch_gym
+from mpc_sac.nn.extractor import Extractor, ExtractorName, get_extractor_cls
+from mpc_sac.nn.mlp import Mlp, MlpConfig
+from mpc_sac.utils import torch_gym
 
 
 class StochasticMPCActorOutput(NamedTuple):

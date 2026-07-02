@@ -10,7 +10,7 @@ from torch.distributions import (
     TransformedDistribution,
 )
 
-from leap_c.torch.nn.bounded_distributions import (
+from mpc_sac.nn.bounded_distributions import (
     ModeConcentrationBeta,
     ScaledBeta,
     SquashedGaussian,

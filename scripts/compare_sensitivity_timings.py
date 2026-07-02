@@ -15,8 +15,8 @@ from timeit import default_timer
 
 import torch
 
-from leap_c.examples.cartpole.acados_ocp import export_parametric_ocp
-from leap_c.examples.cartpole.planner import CartPolePlannerConfig
+from leapc_lab.cartpole.acados_ocp import export_parametric_ocp
+from leapc_lab.cartpole.planner import CartPolePlannerConfig
 from leap_c.ocp.acados.torch import AcadosDiffMpcTorch
 
 WARMUP = 2

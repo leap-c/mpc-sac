@@ -11,10 +11,10 @@ from gymnasium import Env
 from gymnasium.wrappers import RecordVideo
 from numpy import ndarray
 
-from leap_c.controller import CtxType
-from leap_c.examples.utils.matplotlib_env import MatplotlibRenderEnv
-from leap_c.torch.utils.seed import RngType, mk_seed
-from leap_c.utils.gym import seed_env
+from leapc_lab.controller import CtxType
+from leapc_lab.utils.matplotlib_env import MatplotlibRenderEnv
+from mpc_sac.utils.seed import RngType, mk_seed
+from mpc_sac.utils.gym import seed_env
 
 
 def episode_rollout(

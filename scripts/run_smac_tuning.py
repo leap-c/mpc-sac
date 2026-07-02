@@ -24,10 +24,10 @@ from ConfigSpace import ConfigurationSpace, Float
 from smac import HyperparameterOptimizationFacade, Scenario
 from torch.utils.data._utils.collate import default_collate
 
-from leap_c.examples import ExampleControllerName, ExampleEnvName, create_controller, create_env
-from leap_c.run import resolve_output_path, resolve_reuse_code_dir
-from leap_c.torch.rl.buffer import pytree_tensor_to
-from leap_c.utils.gym import flatten_param_space
+from leapc_lab import ExampleControllerName, ExampleEnvName, create_controller, create_env
+from mpc_sac.run import resolve_output_path, resolve_reuse_code_dir
+from mpc_sac.rl.buffer import pytree_tensor_to
+from mpc_sac.utils.gym import flatten_param_space
 
 
 @dataclass

@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from gymnasium import spaces
 
-from leap_c.torch.utils import gym as torch_gym
+from mpc_sac.utils import torch_gym
 
 
 def test_flatten_unflatten_box_preserves_gradients():

@@ -13,13 +13,13 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from leap_c.torch.nn.extractor import ExtractorName, get_extractor_cls
-from leap_c.torch.nn.mlp import MlpConfig
-from leap_c.torch.rl.buffer import ReplayBuffer
-from leap_c.torch.rl.sac import SacActor, SacCritic
-from leap_c.torch.utils.seed import mk_seed
-from leap_c.trainer import Trainer, TrainerConfig
-from leap_c.utils.gym import seed_env, wrap_env
+from mpc_sac.nn.extractor import ExtractorName, get_extractor_cls
+from mpc_sac.nn.mlp import MlpConfig
+from mpc_sac.rl.buffer import ReplayBuffer
+from mpc_sac.rl.sac import SacActor, SacCritic
+from mpc_sac.utils.seed import mk_seed
+from mpc_sac.trainer import Trainer, TrainerConfig
+from mpc_sac.utils.gym import seed_env, wrap_env
 
 
 @dataclass(kw_only=True)

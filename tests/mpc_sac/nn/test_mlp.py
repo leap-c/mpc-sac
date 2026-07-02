@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import torch
 
-from leap_c.torch.nn.mlp import Mlp, MlpConfig
+from mpc_sac.nn.mlp import Mlp, MlpConfig
 
 
 @pytest.mark.parametrize("arg_type", (tuple, list, int, np.int16, np.int32, np.int64))

@@ -10,11 +10,11 @@ from typing import Any, Literal, get_args
 import torch
 from yaml import safe_dump
 
-import leap_c
-from leap_c.examples import ExampleControllerName, ExampleEnvName
-from leap_c.trainer import CtxType, Trainer, TrainerConfigType
-from leap_c.utils.cfg import cfg_as_python
-from leap_c.utils.git import log_git_hash_and_diff
+import mpc_sac
+from leapc_lab import ExampleControllerName, ExampleEnvName
+from mpc_sac.trainer import CtxType, Trainer, TrainerConfigType
+from mpc_sac.utils.cfg import cfg_as_python
+from mpc_sac.utils.git import log_git_hash_and_diff
 
 OUTPUT_DIR = Path("output")
 
@@ -240,10 +240,10 @@ def init_run(trainer: Trainer[TrainerConfigType, CtxType], cfg, output_path: str
         trainer.load(output_path)
 
     # store git hash and diff
-    if leap_c.__file__ is not None:
-        module_root = Path(leap_c.__file__).parent.parent
+    if mpc_sac.__file__ is not None:
+        module_root = Path(mpc_sac.__file__).parent.parent
     else:
-        module_root = Path(leap_c.__path__[0]).parent
+        module_root = Path(mpc_sac.__path__[0]).parent
     log_git_hash_and_diff(output_path / "git.txt", module_root)
 
 

@@ -3,8 +3,8 @@ from tempfile import TemporaryDirectory
 
 from torch import float32
 
-from leap_c.examples.cartpole.env import CartPoleEnv
-from leap_c.torch.rl.sac import SacTrainer, SacTrainerConfig
+from leapc_lab.cartpole.env import CartPoleEnv
+from mpc_sac.rl.sac import SacTrainer, SacTrainerConfig
 
 
 def test_trainer_checkpointing():

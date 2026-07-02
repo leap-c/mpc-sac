@@ -7,13 +7,13 @@ from pathlib import Path
 import pytest
 import torch
 
-import leap_c
-from leap_c.examples import CONTROLLER_REGISTRY, ENV_REGISTRY, PLANNER_REGISTRY
+import mpc_sac
+from leapc_lab import CONTROLLER_REGISTRY, ENV_REGISTRY, PLANNER_REGISTRY
 
-if getattr(leap_c, "__file__", None):
-    LEAP_C_ROOT = Path(leap_c.__file__).resolve().parent.parent
+if getattr(mpc_sac, "__file__", None):
+    LEAP_C_ROOT = Path(mpc_sac.__file__).resolve().parent.parent
 else:
-    LEAP_C_ROOT = Path(next(iter(leap_c.__path__))).resolve().parent
+    LEAP_C_ROOT = Path(next(iter(mpc_sac.__path__))).resolve().parent
 LEAP_C_ROOT_SCRIPTS = LEAP_C_ROOT / "scripts"
 CTRL_REGISTRY = CONTROLLER_REGISTRY | PLANNER_REGISTRY
 
@@ -33,7 +33,7 @@ def _create_script_module(script_name: str):
     if not script_path.exists():
         raise ValueError(f"Script {script_name} does not exist at {script_path}")
 
-    script_module = types.ModuleType(f"leap_c_test_scripts.{script_name}")
+    script_module = types.ModuleType(f"mpc_sac_test_scripts.{script_name}")
     with open(script_path, "r") as f:
         exec(f.read(), script_module.__dict__)
 

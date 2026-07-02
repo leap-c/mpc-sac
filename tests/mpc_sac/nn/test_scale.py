@@ -3,7 +3,7 @@ import pytest
 import torch
 from gymnasium.spaces import Box
 
-from leap_c.torch.nn.scale import min_max_scaling
+from mpc_sac.nn.scale import min_max_scaling
 
 
 def test_min_max_scaling():

@@ -9,11 +9,11 @@ import numpy as np
 import torch
 from yaml import safe_dump
 
-from leap_c.controller import CtxType
-from leap_c.torch.utils.seed import set_seed
-from leap_c.utils.gym import WrapperType, wrap_env
-from leap_c.utils.logger import Logger, LoggerConfig
-from leap_c.utils.rollout import episode_rollout
+from leapc_lab.controller import CtxType
+from mpc_sac.utils.seed import set_seed
+from mpc_sac.utils.gym import WrapperType, wrap_env
+from mpc_sac.utils.logger import Logger, LoggerConfig
+from mpc_sac.utils.rollout import episode_rollout
 
 ValReportScoreOptions = Literal["cum", "final", "best"]
 

@@ -17,20 +17,20 @@ import numpy as np
 import torch
 from numpy import ndarray
 
-from leap_c.controller import CtxType, ParameterizedController
-from leap_c.examples import ExampleControllerName, ExampleEnvName, create_controller, create_env
-from leap_c.run import (
+from leapc_lab.controller import CtxType, ParameterizedController
+from leapc_lab import ExampleControllerName, ExampleEnvName, create_controller, create_env
+from mpc_sac.run import (
     add_common_args,
     init_run,
     resolve_output_path,
     resolve_reuse_code_dir,
     setup_wandb,
 )
-from leap_c.torch.rl.buffer import ReplayBuffer
-from leap_c.torch.utils import gym as torch_gym
-from leap_c.torch.utils.seed import mk_seed
-from leap_c.trainer import Trainer, TrainerConfig
-from leap_c.utils.gym import seed_env, wrap_env
+from mpc_sac.rl.buffer import ReplayBuffer
+from mpc_sac.utils import torch_gym
+from mpc_sac.utils.seed import mk_seed
+from mpc_sac.trainer import Trainer, TrainerConfig
+from mpc_sac.utils.gym import seed_env, wrap_env
 
 
 @dataclass

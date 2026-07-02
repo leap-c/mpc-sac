@@ -10,7 +10,7 @@ from typing import Literal
 import gymnasium as gym
 import torch.nn as nn
 
-from leap_c.torch.nn.scale import min_max_scaling
+from mpc_sac.nn.scale import min_max_scaling
 
 ExtractorName = Literal["identity", "scaling"]
 

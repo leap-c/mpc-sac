@@ -14,7 +14,7 @@ from leap_c.ocp.acados.data import (
     collate_acados_flattened_iterate_fn,
     collate_acados_ocp_solver_input,
 )
-from leap_c.torch.rl.buffer import ReplayBuffer
+from mpc_sac.rl.buffer import ReplayBuffer
 
 
 class ForNesting(NamedTuple):

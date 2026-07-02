@@ -1,1 +1,1 @@
-import leap_c.torch.rl.sac  # noqa: F401, F403
+import mpc_sac.rl.sac  # noqa: F401, F403

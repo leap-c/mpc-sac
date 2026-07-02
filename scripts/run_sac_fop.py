@@ -7,8 +7,8 @@ from typing import Literal
 
 import torch
 
-from leap_c.examples import ExampleControllerName, ExampleEnvName, create_controller, create_env
-from leap_c.run import (
+from leapc_lab import ExampleControllerName, ExampleEnvName, create_controller, create_env
+from mpc_sac.run import (
     add_common_args,
     default_ckpt_modus,
     init_run,
@@ -16,8 +16,8 @@ from leap_c.run import (
     resolve_reuse_code_dir,
     setup_wandb,
 )
-from leap_c.torch.nn.extractor import ExtractorName
-from leap_c.torch.rl.sac_fop import SacFopTrainer, SacFopTrainerConfig
+from mpc_sac.nn.extractor import ExtractorName
+from mpc_sac.rl.sac_fop import SacFopTrainer, SacFopTrainerConfig
 
 
 @dataclass
