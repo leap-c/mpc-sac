@@ -33,7 +33,14 @@ jobs:
   test:
     name: test py${{ matrix.python-version }}
     runs-on: ubuntu-latest
-    container: ghcr.io/leap-c/acados-ci:ubuntu24.04
+    permissions:
+      contents: read
+      packages: read
+    container:
+      image: ghcr.io/leap-c/acados-ci:ubuntu24.04
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
