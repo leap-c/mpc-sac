@@ -49,7 +49,7 @@ jobs:
       contents: read
       packages: read
     container:
-      image: ghcr.io/leap-c/acados-ci:ubuntu24.04
+      image: ghcr.io/leap-c/leap-c-lab-ci:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -69,15 +69,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Activate Python ${{ matrix.python-version }}
         run: |
-          uv venv --python ${{ matrix.python-version }} .venv
-          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
-          echo "VIRTUAL_ENV=$PWD/.venv" >> "$GITHUB_ENV"
+          echo "/opt/venvs/${{ matrix.python-version }}/bin" >> "$GITHUB_PATH"
+          echo "VIRTUAL_ENV=/opt/venvs/${{ matrix.python-version }}" >> "$GITHUB_ENV"
 
-      - name: Install Python dependencies
+      - name: Install repos under test
         run: |
-          uv pip install /opt/acados/interfaces/acados_template
           uv pip install "git+https://github.com/leap-c/leap-c.git@${LEAP_C_REF}"
           uv pip install "git+https://github.com/leap-c/leap-c-lab.git@${LEAP_C_LAB_REF}"
           uv pip install -e ".[dev]"
