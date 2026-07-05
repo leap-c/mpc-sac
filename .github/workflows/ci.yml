@@ -30,8 +30,8 @@ on:
     types: [leap-c-updated, leap-c-lab-updated, downstream-ci]
 
 jobs:
-  lint:
-    name: lint
+  ruff:
+    name: ruff
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
