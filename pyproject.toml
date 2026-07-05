@@ -16,6 +16,7 @@ dependencies = [
   "numpy>=1.26.0",
   "PyYAML==6.0.2",
   "tensorboard==2.19.0",
+  "tensordict",
   "torch>=2.0.0",
 ]
 
