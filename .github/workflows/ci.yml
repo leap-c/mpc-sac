@@ -33,14 +33,13 @@ jobs:
   test:
     name: test py${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    container: ghcr.io/leap-c/acados-ci:ubuntu24.04
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.11", "3.12", "3.13"]
 
     env:
-      ACADOS_SOURCE_DIR: ${{ github.workspace }}/external/acados
-      LD_LIBRARY_PATH: ${{ github.workspace }}/external/acados/lib
       LEAP_C_REF: ${{ github.event.client_payload.leap_c_ref || github.event.inputs.leap_c_ref || 'main' }}
       LEAP_C_LAB_REF: ${{ github.event.client_payload.leap_c_lab_ref || github.event.inputs.leap_c_lab_ref || 'main' }}
       TEST_ENV: ${{ github.event.client_payload.test_env || github.event.inputs.test_env || 'cartpole' }}
@@ -51,33 +50,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
-
-      - name: Install system dependencies
+      - name: Set up Python ${{ matrix.python-version }}
         run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake g++ gcc gfortran libopenblas-dev liblapack-dev
-
-      - name: Build acados
-        run: |
-          git clone --recursive https://github.com/acados/acados.git external/acados
-          cmake -S external/acados -B external/acados/build \
-            -DACADOS_WITH_OPENMP=ON \
-            -DACADOS_NUM_THREADS=1 \
-            -DACADOS_INSTALL_DIR=${ACADOS_SOURCE_DIR}
-          cmake --build external/acados/build --parallel 2 --target install
+          uv venv --python ${{ matrix.python-version }} .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+          echo "VIRTUAL_ENV=$PWD/.venv" >> "$GITHUB_ENV"
 
       - name: Install Python dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install external/acados/interfaces/acados_template
-          python -m pip install "git+https://github.com/leap-c/leap-c.git@${LEAP_C_REF}"
-          python -m pip install "git+https://github.com/leap-c/leap-c-lab.git@${LEAP_C_LAB_REF}"
-          python -m pip install -e ".[dev]"
+          uv pip install /opt/acados/interfaces/acados_template
+          uv pip install "git+https://github.com/leap-c/leap-c.git@${LEAP_C_REF}"
+          uv pip install "git+https://github.com/leap-c/leap-c-lab.git@${LEAP_C_LAB_REF}"
+          uv pip install -e ".[dev]"
 
       - name: Ruff
         run: |
