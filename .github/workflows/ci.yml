@@ -30,6 +30,18 @@ on:
     types: [leap-c-updated, leap-c-lab-updated, downstream-ci]
 
 jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check linting violations
+        uses: astral-sh/ruff-action@v4.0.0
+        with:
+          args: "check --config pyproject.toml --output-format=github ."
+      - name: Check formatting violations
+        run: ruff format --diff --config pyproject.toml .
+
   test:
     name: test py${{ matrix.python-version }}
     runs-on: ubuntu-latest
@@ -69,14 +81,6 @@ jobs:
           uv pip install "git+https://github.com/leap-c/leap-c.git@${LEAP_C_REF}"
           uv pip install "git+https://github.com/leap-c/leap-c-lab.git@${LEAP_C_LAB_REF}"
           uv pip install -e ".[dev]"
-
-      - name: Ruff
-        run: |
-          ruff check --config pyproject.toml .
-          ruff format --diff .
-
-      - name: Compile
-        run: python -m compileall mpc_sac scripts tests
 
       - name: Unit tests
         run: pytest tests/mpc_sac -v --ignore=tests/mpc_sac/test_scripts.py
